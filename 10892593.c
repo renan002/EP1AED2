@@ -226,8 +226,13 @@ void exibeArranjoInteiros(int* arranjo, int n){
 
 /* Vizinhos em Comum */
 void vizinhosEmComum(Grafo* g, int v, int* vizinhos){
-
-/* Complete o codigo desta funcao */
+  if(!g || v < 0 || v > g->numVertices || !vizinhos) return;
+  
+  if(!possuiVizinhos(g, v)) return;
+  int x;
+  for(x=0;x<g->numVertices;x++){
+    vizinhos[x] = 1;
+  }
 
 }
 
