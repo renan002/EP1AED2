@@ -231,7 +231,8 @@ void vizinhosEmComum(Grafo* g, int v, int* vizinhos){
   if(!possuiVizinhos(g, v)) return;
   int x;
   for(x=0;x<g->numVertices;x++){
-    vizinhos[x] = 1;
+    if(x==v) vizinhos[x] = retornaGrauDoVertice(g, v);
+    
   }
 
 }
