@@ -219,7 +219,6 @@ void exibeArranjoInteiros(int* arranjo, int n){
 }
 
 
-
 /* FUNCOES QUE DEVEM SER COMPLETADAS PARA RESOLVER O EP.
    A DESCRICAO DE CADA FUNCAO ESTA NO ENUNCIADO DO EP.
    www.each.usp.br/digiampietri/ACH2024/ep1/ep1.pdf        */
@@ -229,12 +228,35 @@ void vizinhosEmComum(Grafo* g, int v, int* vizinhos){
   if(!g || v < 0 || v > g->numVertices || !vizinhos) return;
   
   if(!possuiVizinhos(g, v)) return;
-  int x;
+  int x, y;
+  int aux = 0;
+
+
+  int** mVizinhos = (int**) malloc(sizeof(int*)*g->numVertices);
   for(x=0;x<g->numVertices;x++){
-    if(x==v) vizinhos[x] = retornaGrauDoVertice(g, v);
-    
+    mVizinhos[x] = (int*) malloc(sizeof(int)*g->numVertices);
+    for(y=0;y<g->numVertices;y++){
+      mVizinhos[x][y] = -1;
+    }
   }
 
+  for (x = 0; x < g->numVertices; x++){
+    //int grau = retornaGrauDoVertice(g, x);
+    for(y=0;y<g->numVertices;y++){
+      if (g->matriz[x][y])
+      {
+        mVizinhos[x][aux] = y;
+        aux++;
+      }
+    }
+  }
+  printf("test\n");
+  printf("%i \n", mVizinhos[0][0]);
+
+  for(x=0;x<g->numVertices;x++){
+    free(mVizinhos[x]);
+  }
+  free(mVizinhos);
 }
 
 
