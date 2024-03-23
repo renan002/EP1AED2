@@ -249,13 +249,6 @@ void vizinhosEmComum(Grafo* g, int v, int* vizinhos){
       }
     }
   }
-  printf("test\n");
-  printf("%i \n", mVizinhos[0][0]);
-
-  for(x=0;x<g->numVertices;x++){
-    free(mVizinhos[x]);
-  }
-  free(mVizinhos);
 }
 
 
