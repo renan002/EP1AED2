@@ -229,20 +229,19 @@ void vizinhosEmComum(Grafo* g, int v, int* vizinhos){
   
   if(!possuiVizinhos(g, v)) return;
   int x, y;
-  int aux = 0;
-
 
   int** mVizinhos = (int**) malloc(sizeof(int*)*g->numVertices);
-  for(x=0;x<g->numVertices;x++){
+  for(x=0;x < g->numVertices;x++){
     mVizinhos[x] = (int*) malloc(sizeof(int)*g->numVertices);
-    for(y=0;y<g->numVertices;y++){
+    for(y=0;y < g->numVertices;y++){
       mVizinhos[x][y] = -1;
     }
   }
 
   for (x = 0; x < g->numVertices; x++){
     //int grau = retornaGrauDoVertice(g, x);
-    for(y=0;y<g->numVertices;y++){
+    int aux = 0;
+    for(y=0;y < g->numVertices;y++){
       if (g->matriz[x][y])
       {
         mVizinhos[x][aux] = y;
