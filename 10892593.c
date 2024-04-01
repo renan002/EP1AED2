@@ -27,12 +27,32 @@ typedef struct {
   bool** matriz;
 } Grafo;
 
+typedef struct {
+  int* itens;
+  int maxItens;
+  int tamanho;
+} Lista;
+
 
 /* Funcao auxiliar para o sistema de correcao automatica (nao mexer) */
 void printf123(){
     // Funcao usada pelo sistema de correcao automatica (nao mexer)
 }
 
+bool novaLista(Lista* l, int numItems) {
+  if(!l || !numItems || numItems < 0) return false;
+
+  l->maxItens = numItems;
+  l->itens = (int*) malloc(sizeof(int)*numItems);
+  l->tamanho = 0;
+
+  int x;
+  for(x=0;x<numItems;x++){
+    l->itens[x] = -1;
+  }
+
+  return true;
+}
 
 /* Funcao que inicializa o grafo cujo endereco foi passado como parametro.
    Isto e, cria a matriz de adjacencias (preenchida com false),
@@ -228,27 +248,70 @@ void vizinhosEmComum(Grafo* g, int v, int* vizinhos){
   if(!g || v < 0 || v > g->numVertices || !vizinhos) return;
   
   if(!possuiVizinhos(g, v)) return;
-  int x, y;
+  int x, y, z;
 
-  int** mVizinhos = (int**) malloc(sizeof(int*)*g->numVertices);
+  /*int** mVizinhos = (int**) malloc(sizeof(int*)*g->numVertices);
   for(x=0;x < g->numVertices;x++){
     mVizinhos[x] = (int*) malloc(sizeof(int)*g->numVertices);
     for(y=0;y < g->numVertices;y++){
       mVizinhos[x][y] = -1;
     }
+  }*/
+
+  Lista* matriz = (Lista*) malloc(sizeof(Lista)*g->numVertices);
+
+  for(x=0;x<g->numVertices;x++){
+    bool b = novaLista(&matriz[x], g->numVertices);
   }
 
   for (x = 0; x < g->numVertices; x++){
-    //int grau = retornaGrauDoVertice(g, x);
+    Lista* l = &matriz[x];
     int aux = 0;
-    for(y=0;y < g->numVertices;y++){
+    for(y=0;y < l->maxItens;y++){
       if (g->matriz[x][y])
       {
-        mVizinhos[x][aux] = y;
+        //mVizinhos[x][aux] = y;
+        l->itens[aux] = y;
         aux++;
       }
     }
+    l->tamanho=aux;
+    //matriz[x] = l;
   }
+
+  Lista* vListaNumVertices = &matriz[v];
+  //exibeArranjoInteiros(vListaNumVertices->itens, vListaNumVertices->tamanho);
+
+  for(x=0;x<g->numVertices;x++){
+    int aux = 0;
+    Lista* listNumVertices = &matriz[x];
+    //exibeArranjoInteiros(listNumVertices->itens, listNumVertices->tamanho);
+  }
+
+  for(x=0;x<g->numVertices;x++) {
+    if(x==v) vizinhos[x] = vListaNumVertices->tamanho;
+    Lista* l = &matriz[x];
+    for(y=0;y<l->tamanho;y++){
+      for(z=0;z<vListaNumVertices->tamanho;z++){
+        if(l->itens[y] == vListaNumVertices->itens[z]){
+          vizinhos[x] += 1;
+        }
+      }
+    }
+  }
+
+  /*for (x=0;x<5;x++) printf(" %4i",x);
+  printf("\n");
+  for (x=0;x<5;x++){
+    Lista l = matriz[x];
+    printf("%4i",x);
+    for (y=0;y<5;y++){
+      printf("%4i",l.itens[y]); 
+    }
+       
+    printf("\n");
+  }
+  printf("\n");*/
 }
 
 
@@ -336,7 +399,7 @@ int main() {
   vizinhosEmComum(&g1, 0, vComum);
   exibeArranjoInteiros(vComum, n);
 
-  printf("Coeficientes de Jaccard de v0:\n");
+  /*printf("Coeficientes de Jaccard de v0:\n");
   coeficienteDeJaccard(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
@@ -403,12 +466,12 @@ int main() {
 
   HDI(&g1, 0, coeficientes);
   printf("Indice HDI de v0:\n");
-  exibeArranjoReais(coeficientes, n);
+  exibeArranjoReais(coeficientes, n);*/
 
 
   /* Grafo gerado aleatoriamente - pode ficar diferente
      de acordo com o compilador usado.                 */
-  printf("\nTERCEIRO EXEMPLO\n");
+  /*printf("\nTERCEIRO EXEMPLO\n");
   n = 6;
   int arestas = 8;
   
@@ -521,7 +584,7 @@ int main() {
 
   printf("Indice HDI de v5:\n");
   HDI(g2, 5, coeficientes);
-  exibeArranjoReais(coeficientes, n);
+  exibeArranjoReais(coeficientes, n);*/ 
 
   return 0;  
 }
