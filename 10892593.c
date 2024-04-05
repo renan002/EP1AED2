@@ -221,6 +221,16 @@ void uniaoDeVizinhos(Grafo* g, int v, int* uniao) {
 
   int x, y;
   
+  
+  if(!possuiVizinhos(g, v)){
+    for(x=0;x<g->numVertices;x++) {
+      uniao[x] = 0;
+    }
+    return;
+  }
+  
+
+
   if(!possuiVizinhos(g, v)){
     for(x=0;x<g->numVertices;x++) {
       uniao[x] = 0;
@@ -246,12 +256,6 @@ void uniaoDeVizinhos(Grafo* g, int v, int* uniao) {
 void vizinhosEmComum(Grafo* g, int v, int* vizinhos){
   if(!g || v < 0 || v > g->numVertices || !vizinhos) return;
   int x, y;
-  if(!possuiVizinhos(g, v)) {
-    for(x=0;x<g->numVertices;x++) {
-      vizinhos[x] = 0;
-    }
-    return;
-  }
   
   for(x=0;x<g->numVertices;x++) {
     int count = 0;
@@ -277,9 +281,7 @@ void coeficienteDeJaccard(Grafo* g, int v, float* coeficientes){
   uniaoDeVizinhos(g, v, uniao);
 
   for(x=0;x<g->numVertices;x++) {
-    if(uniao[x]==0) coeficientes[x] = -1;
-
-    coeficientes[x] = (float) vizinhos[x] / (float) uniao[x];
+    (uniao[x]==0) ? coeficientes[x] = -1 : (coeficientes[x] = ((float) vizinhos[x]) / ((float) uniao[x]));
   }
 
 }
@@ -345,9 +347,21 @@ void similaridadeCosseno(Grafo* g, int v, float* coeficientes){
 
 /* Coeficiente de Dice */
 void coeficienteDeDice(Grafo* g, int v, float* coeficientes){
+  if(!g || v < 0 || v > g->numVertices || !coeficientes) return;
+  int x, y;
 
-/* Complete o codigo desta funcao */
+    int* vizinhos = (int*) malloc(sizeof(int*)*g->numVertices);
 
+  vizinhosEmComum(g, v, vizinhos);
+  float grauDeV = (float) retornaGrauDoVertice(g, v);
+
+  for(x=0;x<g->numVertices;x++) {
+    float grauDeX = (float) retornaGrauDoVertice(g, x);
+    float vizinhosVX = (float) vizinhos[x];
+
+    (grauDeV==0 && grauDeX==0) ? (coeficientes[x] = -1) : (coeficientes[x] = (2.0*vizinhosVX / (grauDeV+grauDeX)));
+    
+  }
 }
 
 
@@ -361,7 +375,12 @@ void HPI(Grafo* g, int v, float* coeficientes){
 
 /* Hub Depressed Index */
 void HDI(Grafo* g, int v, float* coeficientes){
+  if(!g || v < 0 || v > g->numVertices || !coeficientes) return;
+  int x, y;
 
+
+/* Complete o codigo desta funcao */
+  
 /* Complete o codigo desta funcao */
 
 }
@@ -411,11 +430,11 @@ int main() {
   similaridadeCosseno(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
-  /*coeficienteDeDice(&g1, 0, coeficientes);
+  coeficienteDeDice(&g1, 0, coeficientes);
   printf("Coeficiente de Dice de v0:\n");
   exibeArranjoReais(coeficientes, n);
 
-  HPI(&g1, 0, coeficientes);
+  /*HPI(&g1, 0, coeficientes);
   printf("Indice HPI de v0:\n");
   exibeArranjoReais(coeficientes, n);
 
@@ -452,11 +471,11 @@ int main() {
   similaridadeCosseno(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
-  /*coeficienteDeDice(&g1, 0, coeficientes);
+  coeficienteDeDice(&g1, 0, coeficientes);
   printf("Coeficiente de Dice de v0:\n");
   exibeArranjoReais(coeficientes, n);
 
-  HPI(&g1, 0, coeficientes);
+  /*HPI(&g1, 0, coeficientes);
   printf("Indice HPI de v0:\n");
   exibeArranjoReais(coeficientes, n);
 
@@ -544,7 +563,7 @@ int main() {
   exibeArranjoReais(coeficientes, n);
 
 
-  /*coeficienteDeDice(g2, 0, coeficientes);
+  coeficienteDeDice(g2, 0, coeficientes);
   printf("Coeficiente de Dice de v0:\n");
   exibeArranjoReais(coeficientes, n);
 
@@ -557,7 +576,7 @@ int main() {
   exibeArranjoReais(coeficientes, n);
 
 
-  HPI(g2, 0, coeficientes);
+  /*HPI(g2, 0, coeficientes);
   printf("Indice HPI de v0:\n");
   exibeArranjoReais(coeficientes, n);
 
