@@ -307,16 +307,24 @@ void AdamicAdar(Grafo* g, int v, float* coeficientes){
 
 /* Alocacao de Recursos */
 void alocacaoDeRecursos(Grafo* g, int v, float* coeficientes){
+  if(!g || v < 0 || v > g->numVertices || !coeficientes) return;
+  int x, y;
+  
+  for(x=0;x<g->numVertices;x++) {
+    float count = 0;
 
-/* Complete o codigo desta funcao */
-
+    for(y=0;y<g->numVertices;y++) {
+      if(g->matriz[v][y] && g->matriz[x][y]) {
+        float grauDeY = (float) retornaGrauDoVertice(g, y);
+        count += 1.0 / grauDeY;
+      }
+    }
+    coeficientes[x] = count;
+  }
 }
-
 
 /* Similaridade Cosseno */
 void similaridadeCosseno(Grafo* g, int v, float* coeficientes){
-
-/* Complete o codigo desta funcao */
 
 }
 
@@ -381,11 +389,11 @@ int main() {
   AdamicAdar(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
-  /*printf("Medida de Alocacao de Recursos de v0:\n");
+  printf("Medida de Alocacao de Recursos de v0:\n");
   alocacaoDeRecursos(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
-  printf("Similaridade Cosseno de v0:\n");
+  /*printf("Similaridade Cosseno de v0:\n");
   similaridadeCosseno(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
@@ -422,11 +430,11 @@ int main() {
   AdamicAdar(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
-  /*printf("Medida de Alocacao de Recursos de v0:\n");
+  printf("Medida de Alocacao de Recursos de v0:\n");
   alocacaoDeRecursos(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
-  printf("Similaridade Cosseno de v0:\n");
+  /*printf("Similaridade Cosseno de v0:\n");
   similaridadeCosseno(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
@@ -491,7 +499,7 @@ int main() {
   AdamicAdar(g2, 1, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
-  /*printf("Medida de Adamic-Adar de v5:\n");
+  printf("Medida de Adamic-Adar de v5:\n");
   AdamicAdar(g2, 5, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
@@ -509,7 +517,7 @@ int main() {
   exibeArranjoReais(coeficientes, n);
 
 
-  printf("Similaridade Cosseno de v0:\n");
+  /* printf("Similaridade Cosseno de v0:\n");
   similaridadeCosseno(g2, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
