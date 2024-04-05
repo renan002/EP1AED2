@@ -22,7 +22,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Compile
+    - name: Run
       # Build your program with the given configuration
       run: | 
         gcc -o 10892593 10892593.c -lm 
