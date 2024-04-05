@@ -254,10 +254,8 @@ void uniaoDeVizinhos(Grafo* g, int v, int* uniao) {
   for(x=0;x<g->numVertices;x++) {
     int count = 0;
 
-    for(y=0;y<g->numVertices;y++) {
-      if(g->matriz[v][y]) count++;
-      if(g->matriz[x][y] && x!=v) count++;
-    }
+    for(y=0;y<g->numVertices;y++)
+      if(g->matriz[v][y] || g->matriz[x][y]) count++;
     uniao[x] = count;
   }
 }
