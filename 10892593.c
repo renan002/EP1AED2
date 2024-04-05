@@ -248,70 +248,17 @@ void vizinhosEmComum(Grafo* g, int v, int* vizinhos){
   if(!g || v < 0 || v > g->numVertices || !vizinhos) return;
   
   if(!possuiVizinhos(g, v)) return;
-  int x, y, z;
-
-  /*int** mVizinhos = (int**) malloc(sizeof(int*)*g->numVertices);
-  for(x=0;x < g->numVertices;x++){
-    mVizinhos[x] = (int*) malloc(sizeof(int)*g->numVertices);
-    for(y=0;y < g->numVertices;y++){
-      mVizinhos[x][y] = -1;
-    }
-  }*/
-
-  Lista* matriz = (Lista*) malloc(sizeof(Lista)*g->numVertices);
+  int x, y;
 
   for(x=0;x<g->numVertices;x++){
-    bool b = novaLista(&matriz[x], g->numVertices);
-  }
+    int count = 0;
 
-  for (x = 0; x < g->numVertices; x++){
-    Lista* l = &matriz[x];
-    int aux = 0;
-    for(y=0;y < l->maxItens;y++){
-      if (g->matriz[x][y])
-      {
-        //mVizinhos[x][aux] = y;
-        l->itens[aux] = y;
-        aux++;
-      }
+    for(y=0;y<g->numVertices;y++) {
+      if(g->matriz[v][y] && g->matriz[x][y]) count++;
     }
-    l->tamanho=aux;
-    //matriz[x] = l;
+    vizinhos[x] = count;
   }
 
-  Lista* vListaNumVertices = &matriz[v];
-  //exibeArranjoInteiros(vListaNumVertices->itens, vListaNumVertices->tamanho);
-
-  for(x=0;x<g->numVertices;x++){
-    int aux = 0;
-    Lista* listNumVertices = &matriz[x];
-    //exibeArranjoInteiros(listNumVertices->itens, listNumVertices->tamanho);
-  }
-
-  for(x=0;x<g->numVertices;x++) {
-    if(x==v) vizinhos[x] = vListaNumVertices->tamanho;
-    Lista* l = &matriz[x];
-    for(y=0;y<l->tamanho;y++){
-      for(z=0;z<vListaNumVertices->tamanho;z++){
-        if(l->itens[y] == vListaNumVertices->itens[z]){
-          vizinhos[x] += 1;
-        }
-      }
-    }
-  }
-
-  /*for (x=0;x<5;x++) printf(" %4i",x);
-  printf("\n");
-  for (x=0;x<5;x++){
-    Lista l = matriz[x];
-    printf("%4i",x);
-    for (y=0;y<5;y++){
-      printf("%4i",l.itens[y]); 
-    }
-       
-    printf("\n");
-  }
-  printf("\n");*/
 }
 
 
