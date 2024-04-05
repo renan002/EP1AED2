@@ -367,9 +367,23 @@ void coeficienteDeDice(Grafo* g, int v, float* coeficientes){
 
 /* Hub Promoted Index */
 void HPI(Grafo* g, int v, float* coeficientes){
+  if(!g || v < 0 || v > g->numVertices || !coeficientes) return;
+  int x, y;
 
-/* Complete o codigo desta funcao */
+  int* vizinhos = (int*) malloc(sizeof(int*)*g->numVertices);
 
+  vizinhosEmComum(g, v, vizinhos);
+  float grauDeV = (float) retornaGrauDoVertice(g, v);
+
+  for(x=0;x<g->numVertices;x++) {
+    float grauDeX = (float) retornaGrauDoVertice(g, x);
+    float vizinhosVX = (float) vizinhos[x];
+
+    float min = grauDeV < grauDeX ? grauDeV : grauDeX;
+
+    (min==0) ? (coeficientes[x] = -1) : (coeficientes[x] = (vizinhosVX / min));
+    
+  }
 }
 
 
@@ -378,11 +392,20 @@ void HDI(Grafo* g, int v, float* coeficientes){
   if(!g || v < 0 || v > g->numVertices || !coeficientes) return;
   int x, y;
 
+  int* vizinhos = (int*) malloc(sizeof(int*)*g->numVertices);
 
-/* Complete o codigo desta funcao */
-  
-/* Complete o codigo desta funcao */
+  vizinhosEmComum(g, v, vizinhos);
+  float grauDeV = (float) retornaGrauDoVertice(g, v);
 
+  for(x=0;x<g->numVertices;x++) {
+    float grauDeX = (float) retornaGrauDoVertice(g, x);
+    float vizinhosVX = (float) vizinhos[x];
+
+    float max = grauDeV > grauDeX ? grauDeV : grauDeX;
+
+    (max==0) ? (coeficientes[x] = -1) : (coeficientes[x] = (vizinhosVX / max));
+    
+  }
 }
 
 
@@ -434,13 +457,13 @@ int main() {
   printf("Coeficiente de Dice de v0:\n");
   exibeArranjoReais(coeficientes, n);
 
-  /*HPI(&g1, 0, coeficientes);
+  HPI(&g1, 0, coeficientes);
   printf("Indice HPI de v0:\n");
   exibeArranjoReais(coeficientes, n);
 
   HDI(&g1, 0, coeficientes);
   printf("Indice HDI de v0:\n");
-  exibeArranjoReais(coeficientes, n);*/
+  exibeArranjoReais(coeficientes, n);
 
   printf("\n\nSEGUNDO EXEMPLO\n");
 
@@ -475,13 +498,13 @@ int main() {
   printf("Coeficiente de Dice de v0:\n");
   exibeArranjoReais(coeficientes, n);
 
-  /*HPI(&g1, 0, coeficientes);
+  HPI(&g1, 0, coeficientes);
   printf("Indice HPI de v0:\n");
   exibeArranjoReais(coeficientes, n);
 
   HDI(&g1, 0, coeficientes);
   printf("Indice HDI de v0:\n");
-  exibeArranjoReais(coeficientes, n);*/
+  exibeArranjoReais(coeficientes, n);
 
 
   /* Grafo gerado aleatoriamente - pode ficar diferente
@@ -576,7 +599,7 @@ int main() {
   exibeArranjoReais(coeficientes, n);
 
 
-  /*HPI(g2, 0, coeficientes);
+  HPI(g2, 0, coeficientes);
   printf("Indice HPI de v0:\n");
   exibeArranjoReais(coeficientes, n);
 
@@ -599,7 +622,7 @@ int main() {
 
   printf("Indice HDI de v5:\n");
   HDI(g2, 5, coeficientes);
-  exibeArranjoReais(coeficientes, n);*/ 
+  exibeArranjoReais(coeficientes, n);
 
   return 0;  
 }
