@@ -238,6 +238,29 @@ void exibeArranjoInteiros(int* arranjo, int n){
   printf("\n\n");
 }
 
+void uniaoDeVizinhos(Grafo* g, int v, int* uniao) {
+  if(!g || v < 0 || v > g->numVertices || !uniao) return;
+
+  int x, y;
+  
+  if(!possuiVizinhos(g, v)){
+    for(x=0;x<g->numVertices;x++) {
+      uniao[x] = 0;
+    }
+    return;
+  }
+  
+
+  for(x=0;x<g->numVertices;x++) {
+    int count = 0;
+
+    for(y=0;y<g->numVertices;y++) {
+      if(g->matriz[v][y]) count++;
+      if(g->matriz[x][y] && x!=v) count++;
+    }
+    uniao[x] = count;
+  }
+}
 
 /* FUNCOES QUE DEVEM SER COMPLETADAS PARA RESOLVER O EP.
    A DESCRICAO DE CADA FUNCAO ESTA NO ENUNCIADO DO EP.
@@ -246,11 +269,15 @@ void exibeArranjoInteiros(int* arranjo, int n){
 /* Vizinhos em Comum */
 void vizinhosEmComum(Grafo* g, int v, int* vizinhos){
   if(!g || v < 0 || v > g->numVertices || !vizinhos) return;
-  
-  if(!possuiVizinhos(g, v)) return;
   int x, y;
-
-  for(x=0;x<g->numVertices;x++){
+  if(!possuiVizinhos(g, v)) {
+    for(x=0;x<g->numVertices;x++) {
+      vizinhos[x] = 0;
+    }
+    return;
+  }
+  
+  for(x=0;x<g->numVertices;x++) {
     int count = 0;
 
     for(y=0;y<g->numVertices;y++) {
@@ -264,8 +291,20 @@ void vizinhosEmComum(Grafo* g, int v, int* vizinhos){
 
 /* Coeficiente de Jaccard */
 void coeficienteDeJaccard(Grafo* g, int v, float* coeficientes){
+  if(!g || v < 0 || v > g->numVertices || !coeficientes) return;
+  int x, y;  
 
-/* Complete o codigo desta funcao */
+  int* vizinhos = (int*) malloc(sizeof(int)*g->numVertices);
+  int* uniao = (int*) malloc(sizeof(int)*g->numVertices);
+
+  vizinhosEmComum(g, v, vizinhos);
+  uniaoDeVizinhos(g, v, uniao);
+
+  for(x=0;x<g->numVertices;x++) {
+    if(uniao[x]==0) coeficientes[x] = -1;
+
+    coeficientes[x] = (float) vizinhos[x] / (float) uniao[x];
+  }
 
 }
 
@@ -346,11 +385,11 @@ int main() {
   vizinhosEmComum(&g1, 0, vComum);
   exibeArranjoInteiros(vComum, n);
 
-  /*printf("Coeficientes de Jaccard de v0:\n");
+  printf("Coeficientes de Jaccard de v0:\n");
   coeficienteDeJaccard(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
-  printf("Medida de Adamic-Adar de v0:\n");
+  /*printf("Medida de Adamic-Adar de v0:\n");
   AdamicAdar(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
@@ -372,7 +411,7 @@ int main() {
 
   HDI(&g1, 0, coeficientes);
   printf("Indice HDI de v0:\n");
-  exibeArranjoReais(coeficientes, n);
+  exibeArranjoReais(coeficientes, n);*/
 
   printf("\n\nSEGUNDO EXEMPLO\n");
 
@@ -391,7 +430,7 @@ int main() {
   coeficienteDeJaccard(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
-  printf("Medida de Adamic-Adar de v0:\n");
+  /*printf("Medida de Adamic-Adar de v0:\n");
   AdamicAdar(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
@@ -418,7 +457,7 @@ int main() {
 
   /* Grafo gerado aleatoriamente - pode ficar diferente
      de acordo com o compilador usado.                 */
-  /*printf("\nTERCEIRO EXEMPLO\n");
+  printf("\nTERCEIRO EXEMPLO\n");
   n = 6;
   int arestas = 8;
   
@@ -456,7 +495,7 @@ int main() {
   exibeArranjoReais(coeficientes, n);
 
 
-  printf("Medida de Adamic-Adar de v0:\n");
+  /*printf("Medida de Adamic-Adar de v0:\n");
   AdamicAdar(g2, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
