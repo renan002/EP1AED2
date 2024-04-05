@@ -325,7 +325,21 @@ void alocacaoDeRecursos(Grafo* g, int v, float* coeficientes){
 
 /* Similaridade Cosseno */
 void similaridadeCosseno(Grafo* g, int v, float* coeficientes){
+  if(!g || v < 0 || v > g->numVertices || !coeficientes) return;
+  int x, y;
 
+  int* vizinhos = (int*) malloc(sizeof(int*)*g->numVertices);
+
+  vizinhosEmComum(g, v, vizinhos);
+  float grauDeV = (float) retornaGrauDoVertice(g, v);
+
+  for(x=0;x<g->numVertices;x++) {
+    float grauDeX = (float) retornaGrauDoVertice(g, x);
+    float vizinhosVX = (float) vizinhos[x];
+
+    (grauDeV==0 || grauDeX==0) ? (coeficientes[x] = -1) : (coeficientes[x] = (vizinhosVX / (sqrtf(grauDeV*grauDeX))));
+    
+  }
 }
 
 
@@ -393,11 +407,11 @@ int main() {
   alocacaoDeRecursos(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
-  /*printf("Similaridade Cosseno de v0:\n");
+  printf("Similaridade Cosseno de v0:\n");
   similaridadeCosseno(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
-  coeficienteDeDice(&g1, 0, coeficientes);
+  /*coeficienteDeDice(&g1, 0, coeficientes);
   printf("Coeficiente de Dice de v0:\n");
   exibeArranjoReais(coeficientes, n);
 
@@ -434,11 +448,11 @@ int main() {
   alocacaoDeRecursos(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
-  /*printf("Similaridade Cosseno de v0:\n");
+  printf("Similaridade Cosseno de v0:\n");
   similaridadeCosseno(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
-  coeficienteDeDice(&g1, 0, coeficientes);
+  /*coeficienteDeDice(&g1, 0, coeficientes);
   printf("Coeficiente de Dice de v0:\n");
   exibeArranjoReais(coeficientes, n);
 
@@ -517,7 +531,7 @@ int main() {
   exibeArranjoReais(coeficientes, n);
 
 
-  /* printf("Similaridade Cosseno de v0:\n");
+  printf("Similaridade Cosseno de v0:\n");
   similaridadeCosseno(g2, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
@@ -530,7 +544,7 @@ int main() {
   exibeArranjoReais(coeficientes, n);
 
 
-  coeficienteDeDice(g2, 0, coeficientes);
+  /*coeficienteDeDice(g2, 0, coeficientes);
   printf("Coeficiente de Dice de v0:\n");
   exibeArranjoReais(coeficientes, n);
 
