@@ -27,31 +27,9 @@ typedef struct {
   bool** matriz;
 } Grafo;
 
-typedef struct {
-  int* itens;
-  int maxItens;
-  int tamanho;
-} Lista;
-
-
 /* Funcao auxiliar para o sistema de correcao automatica (nao mexer) */
 void printf123(){
     // Funcao usada pelo sistema de correcao automatica (nao mexer)
-}
-
-bool novaLista(Lista* l, int numItems) {
-  if(!l || !numItems || numItems < 0) return false;
-
-  l->maxItens = numItems;
-  l->itens = (int*) malloc(sizeof(int)*numItems);
-  l->tamanho = 0;
-
-  int x;
-  for(x=0;x<numItems;x++){
-    l->itens[x] = -1;
-  }
-
-  return true;
 }
 
 /* Funcao que inicializa o grafo cujo endereco foi passado como parametro.
@@ -309,8 +287,20 @@ void coeficienteDeJaccard(Grafo* g, int v, float* coeficientes){
 
 /* Medida Adamic Adar */
 void AdamicAdar(Grafo* g, int v, float* coeficientes){
+  if(!g || v < 0 || v > g->numVertices || !coeficientes) return;
+  int x, y;
+  
+  for(x=0;x<g->numVertices;x++) {
+    float count = 0;
 
-/* Complete o codigo desta funcao */
+    for(y=0;y<g->numVertices;y++) {
+      if(g->matriz[v][y] && g->matriz[x][y]) {
+        float grauDeY = (float) retornaGrauDoVertice(g, y);
+        count += 1.0 / logf(grauDeY);
+      }
+    }
+    coeficientes[x] = count;
+  }
 
 }
 
@@ -387,11 +377,11 @@ int main() {
   coeficienteDeJaccard(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
-  /*printf("Medida de Adamic-Adar de v0:\n");
+  printf("Medida de Adamic-Adar de v0:\n");
   AdamicAdar(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
-  printf("Medida de Alocacao de Recursos de v0:\n");
+  /*printf("Medida de Alocacao de Recursos de v0:\n");
   alocacaoDeRecursos(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
@@ -428,11 +418,11 @@ int main() {
   coeficienteDeJaccard(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
-  /*printf("Medida de Adamic-Adar de v0:\n");
+  printf("Medida de Adamic-Adar de v0:\n");
   AdamicAdar(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
-  printf("Medida de Alocacao de Recursos de v0:\n");
+  /*printf("Medida de Alocacao de Recursos de v0:\n");
   alocacaoDeRecursos(&g1, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
@@ -493,7 +483,7 @@ int main() {
   exibeArranjoReais(coeficientes, n);
 
 
-  /*printf("Medida de Adamic-Adar de v0:\n");
+  printf("Medida de Adamic-Adar de v0:\n");
   AdamicAdar(g2, 0, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
@@ -501,7 +491,7 @@ int main() {
   AdamicAdar(g2, 1, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
-  printf("Medida de Adamic-Adar de v5:\n");
+  /*printf("Medida de Adamic-Adar de v5:\n");
   AdamicAdar(g2, 5, coeficientes);
   exibeArranjoReais(coeficientes, n);
 
