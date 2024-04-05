@@ -26,5 +26,6 @@ jobs:
       # Build your program with the given configuration
       run: | 
         gcc -o 10892693 10892593.c -lm 
+        ls
         ./10892593
 
