@@ -298,7 +298,12 @@ void AdamicAdar(Grafo* g, int v, float* coeficientes){
     for(y=0;y<g->numVertices;y++) {
       if(g->matriz[v][y] && g->matriz[x][y]) {
         float grauDeY = (float) retornaGrauDoVertice(g, y);
+        if (grauDeY==1) {
+          count = (-1.0);
+          break;
+        } 
         count += 1.0 / logf(grauDeY);
+        
       }
     }
     coeficientes[x] = count;
