@@ -6,7 +6,7 @@
 /**   Primeiro Exercicio-Programa                                   **/
 /**                                                                 **/
 /**   Renan Goncalves Mastropaolo                   10892593        **/
-/**                                                                 **/
+/**   https://github.com/renan002/EP1AED2                           **/
 /*********************************************************************/
 
 // gcc completeERenomeie.c -lm
